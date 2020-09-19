@@ -57,6 +57,8 @@ def first_run():
                 image_direct_url = image_direct_index_str[int(image_direct_index): len(image_direct_index_str) -3]
                 # print(image_direct_url)
                 resize_image(image_direct_url, index)
+                send_to_telegram(index)
+                sleep(5)
                 temp_driver.close()
             except IndexError:
                 temp_driver.close()
@@ -95,21 +97,22 @@ def send_to_telegram(image_index):
     # telegram.find_elements_by_css_selector('.composer_rich_textarea')[0].send_keys(os.getcwd() + '/img/output_672.png')
     # abc = telegram.find_element_by_css_selector('/composer_rich_textarea')
     
-    #! droparea
-    telegram.find_element_by_xpath("//input[@class='im_attach_input']").send_keys(os.getcwd() + '/img/output_672.png')
+    try:
+        telegram.find_element_by_xpath("//input[@class='im_attach_input']").send_keys(os.getcwd() + '/img/output_' + str(image_index) + '.png')
+    except Exception as e: 
+        print(e)
+    print(os.getcwd() + '/img/' + str(image_index) + '.png')
     #drop_area = telegram.find_elements_by_css_selector('.composer_rich_textarea')[0]
     
-
-    # telegram.find_element_by_xpath("//button[@type='submit']").click()
-
-    
+    sleep(3)
+    telegram.find_elements_by_css_selector('.composer_rich_textarea')[0].send_keys(':joy:')
+    telegram.find_element_by_xpath("//button[@type='submit']").click()
+  
     
     # send_button = telegram.find_elements_by_class_name('btn-md')[0]
     # send_button
 
-    sleep(10)
-
-
+    sleep(3)
 
     telegram.close()
 
@@ -135,7 +138,7 @@ def get_last_image_index():
 def main():
     print('this is main')
 if __name__ == '__main__':
-    # init()
-    #first_run()
-    send_to_telegram(image_url)
+    init()
+    first_run()
+    # send_to_telegram(image_url)
     
